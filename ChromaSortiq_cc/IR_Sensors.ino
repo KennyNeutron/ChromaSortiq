@@ -10,7 +10,7 @@ void IR_Init() {
 }
 
 
-void Status_IR(char WhichIR){
+bool Status_IR(char WhichIR){
     switch(WhichIR){
         case 'L': //LEFT IR
             return digitalRead(IR_Left);

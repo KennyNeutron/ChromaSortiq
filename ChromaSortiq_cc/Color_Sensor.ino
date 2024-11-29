@@ -40,3 +40,25 @@ uint32_t Color_GetTargetMarking() {
     return Color_None;
   }
 }
+
+void Color_TestColor() {
+  last_micros = micros();
+  switch (Color_GetTargetMarking()) {
+    case Color_Red:
+      Serial.println("The color is RED");
+      break;
+    case Color_Green:
+      Serial.println("The color is GREEN");
+      break;
+    case Color_Blue:
+      Serial.println("The color is BLUE");
+      break;
+    case Color_None:
+      Serial.println("The color is NO COLOR DETECTED");
+      break;
+    default:
+      Serial.println("The color is NO COLOR DETECTED");
+      break;
+  }
+  Serial.println("Time Elapsed:" + String(micros() - last_micros));
+}

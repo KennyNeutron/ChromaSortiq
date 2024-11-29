@@ -5,11 +5,11 @@
 #define enA 6
 #define enB 7
 
-const uint8_t Speed_Motor1 = 125;
-const uint8_t Speed_Motor2 = 125;
+const uint8_t Speed_Motor1 = 126;
+const uint8_t Speed_Motor2 = 126;
 
-const uint8_t Speed_RightTurn = 137;
-const uint8_t Speed_LeftTurn = 137;
+const uint8_t Speed_RightTurn = 126;
+const uint8_t Speed_LeftTurn = 126;
 
 void Motors_Init(){
     pinMode(in1, OUTPUT);
@@ -21,39 +21,39 @@ void Motors_Init(){
 }
 
 void Motor_Forward() {
+  analogWrite(enA, Speed_Motor1);
+  analogWrite(enB, Speed_Motor2);
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
-  analogWrite(enA, Speed_Motor1);
-  analogWrite(enB, Speed_Motor2);
 }
 
 void Motor_Left() {
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, LOW);
   analogWrite(enA, Speed_LeftTurn);
   analogWrite(enB, Speed_RightTurn);
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
 }
 
 void Motor_Right() {
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);
   analogWrite(enA, Speed_LeftTurn);
   analogWrite(enB, Speed_RightTurn);
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(in3, LOW);
+  digitalWrite(in4, HIGH);
 }
 
 void Motor_Stop() {
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
   digitalWrite(in1, LOW);
   digitalWrite(in2, LOW);
   digitalWrite(in3, LOW);
   digitalWrite(in4, LOW);
-  analogWrite(enA, 0);
-  analogWrite(enB, 0);
 }
 
 
