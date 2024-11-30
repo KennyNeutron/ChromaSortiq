@@ -6,7 +6,6 @@ const uint32_t Color_None = 0xFFFFFF;
 bool isReturning = false;
 bool servoMoved = false;
 
-
 #define servoPin 13
 
 Servo myServo;
