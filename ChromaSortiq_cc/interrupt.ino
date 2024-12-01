@@ -48,17 +48,21 @@ start_linefollow:
     }
 
     if (IR_Status('L') && !IR_Status('M')) {
-      digitalWrite(enA, 0);  //Tleft
-      delay(500);
-      digitalWrite(in1, LOW);
-      digitalWrite(in2, HIGH);
+
+      while (!IR_Status('M')) {
+        digitalWrite(enA, 0);  //Tleft
+      }
+      // digitalWrite(in1, LOW);
+      // digitalWrite(in2, HIGH);
       digitalWrite(enA, 1);
       hasForwarded = false;
     } else if (IR_Status('R') && !IR_Status('M')) {
-      digitalWrite(enB, 0);  //TRight
-      delay(500);
-      digitalWrite(in3, LOW);
-      digitalWrite(in4, HIGH);
+      while (!IR_Status('M')) {
+        digitalWrite(enB, 0);  //TRight
+      }
+
+      // digitalWrite(in3, LOW);
+      // digitalWrite(in4, HIGH);
       digitalWrite(enB, 1);
       hasForwarded = false;
     } else {

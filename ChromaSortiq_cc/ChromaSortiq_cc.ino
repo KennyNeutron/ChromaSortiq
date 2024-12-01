@@ -19,16 +19,14 @@ uint32_t isr_count = 0;
 bool start_operation = false;
 
 uint8_t marker_Station = 0;
-uint16_t delay_forward = 1000;
+uint16_t delay_forward = 300;
 
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Start");
   Serial.println("EEPROM[1]:" + String(EEPROM.read(1)));
-  //EEPROM.write(1,129);
   pinMode(13, OUTPUT);
-  digitalWrite(13, 0);
   Motors_Init();
 
   IR_Init();
@@ -38,18 +36,26 @@ void setup() {
   myServo.attach(servoPin);
   myServo.write(130);
   delay(1000);
+  Servo_Shake();
+  delay(500);
   Servo_DropPackage();
   delay(100);
-  interrupt_setup();
 
+  //++++ TEST HERE ++++
+  // while (1) {
+  //   IR_test();
+  // }
+  //++++++++++++++++++++
+
+  interrupt_setup();
   start_operation = true;
 }
 
 void loop() {
 
-  if (IR_getScore() >= 3 && !markerReached) {
-    markerReached = true;
+  if (IR_getScore() >= 3 && IR_Status('K') && !markerReached) {
     Motor_Stop();
+    markerReached = true;
     marker_Station++;
     if (marker_Station > 4) {
       marker_Station = 1;
@@ -95,14 +101,54 @@ st_station1:
 }
 
 void continue_forward() {
-  digitalWrite(enA, 1);  //TRight
-  delay(90);
+  markerReached = true;
   Motor_Forward();
   delay(delay_forward);
-  while (IR_getScore() >= 3) {
-    Motor_Forward();
-  }
+  //FIND CENTER HERE
+  robot_FindCenter();
   markerReached = false;
   start_operation = true;
   hasForwarded = true;
+}
+
+void robot_FindCenter() {
+  if (IR_Status('M')) {
+    goto rFC_exit;
+  }
+rFC_start:
+  uint32_t lp_count = 0;    //count
+  uint32_t lpc_limit = 90;  //limit
+  uint32_t lpc_inc = 10;    //increment
+  while (!IR_Status('M')) {
+    while (!IR_Status('M') && lp_count < lpc_limit) {
+      digitalWrite(enA, 1);
+      digitalWrite(enB, 0);
+      delay(10);
+      lp_count++;
+    }
+    digitalWrite(enA, 0);
+    digitalWrite(enB, 0);
+    delay(100);
+    lp_count = 0;
+    while (!IR_Status('M') && lp_count < lpc_limit) {
+      digitalWrite(enA, 0);
+      digitalWrite(enB, 1);
+      delay(10);
+      lp_count++;
+    }
+    digitalWrite(enA, 0);
+    digitalWrite(enB, 0);
+    delay(100);
+    lp_count = 0;
+    lpc_limit += lpc_inc;
+  }
+
+  if (!IR_Status('L') && !IR_Status('R') && IR_Status('M')) {
+    goto rFC_exit;
+  } else {
+    goto rFC_start;
+  }
+
+rFC_exit:
+  delay(1);
 }

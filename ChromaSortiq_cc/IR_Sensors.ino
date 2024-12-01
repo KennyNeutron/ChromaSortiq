@@ -35,6 +35,7 @@ void IR_test() {
   Serial.println("IR Right Status: " + String(IR_Status('R')));
   Serial.println("IR Middle Status: " + String(IR_Status('M')));
   Serial.println("IR Marker Status: " + String(IR_Status('K')));
+  Serial.println("IR Score:" +String(IR_getScore()));
 }
 
 

@@ -58,18 +58,6 @@ void Motor_Stop() {
 }
 
 
-void Operate_StopAndDrop() {
-  Motor_Stop();
-  if (!servoMoved) {
-    myServo.write(30);
-    delay(1000);
-    myServo.write(80);
-    servoMoved = true;
-    isReturning = true;
-    //currentColor = "";
-  }
-}
-
 void Servo_Test() {
   myServo.write(30);
   delay(1000);
@@ -84,4 +72,14 @@ void Servo_DropPackage() {
   myServo.write(130);
   delay(1000);
   packageDropped = true;
+}
+
+
+void Servo_Shake() {
+  for (uint8_t i = 0; i < 5; i++) {
+    myServo.write(110);
+    delay(300);
+    myServo.write(80);
+    delay(300);
+  }
 }
