@@ -1,9 +1,3 @@
-#define in1 5
-#define in2 4
-#define in3 3
-#define in4 2
-#define enA 6
-#define enB 7
 
 int Speed_Motor1 = 130;
 int Speed_Motor2 = 130;
@@ -81,4 +75,13 @@ void Servo_Test() {
   delay(1000);
   myServo.write(80);
   delay(1000);
+}
+
+void Servo_DropPackage() {
+  delay(1000);
+  myServo.write(30);
+  delay(1000);
+  myServo.write(130);
+  delay(1000);
+  packageDropped = true;
 }

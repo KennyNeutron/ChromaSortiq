@@ -9,3 +9,10 @@ bool servoMoved = false;
 #define servoPin 13
 
 Servo myServo;
+
+#define in1 5
+#define in2 4
+#define in3 3
+#define in4 2
+#define enA 6
+#define enB 7

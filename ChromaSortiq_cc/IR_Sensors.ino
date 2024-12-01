@@ -3,7 +3,6 @@
 #define IR_Middle A1
 #define IR_Marker A3
 
-
 void IR_Init() {
   pinMode(IR_Left, INPUT_PULLUP);
   pinMode(IR_Right, INPUT_PULLUP);
@@ -36,4 +35,23 @@ void IR_test() {
   Serial.println("IR Right Status: " + String(IR_Status('R')));
   Serial.println("IR Middle Status: " + String(IR_Status('M')));
   Serial.println("IR Marker Status: " + String(IR_Status('K')));
+}
+
+
+uint8_t IR_getScore() {
+  uint8_t score = 0;
+
+  if (IR_Status('L')) {
+    score++;
+  }
+  if (IR_Status('R')) {
+    score++;
+  }
+  if (IR_Status('M')) {
+    score++;
+  }
+  if (IR_Status('K')) {
+    score++;
+  }
+  return score;
 }
