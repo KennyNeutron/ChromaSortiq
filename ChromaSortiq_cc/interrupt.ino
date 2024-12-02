@@ -33,7 +33,7 @@ ISR(TIMER2_COMPA_vect) {
 start_linefollow:
     if (IR_Status('M') && !hasForwarded) {
       Motor_Forward();
-      delay(100);
+      delay(90);
       hasForwarded = true;
     }
 
@@ -52,6 +52,7 @@ start_linefollow:
       while (!IR_Status('M')) {
         digitalWrite(enA, 0);  //Tleft
       }
+      delay(90);
       // digitalWrite(in1, LOW);
       // digitalWrite(in2, HIGH);
       digitalWrite(enA, 1);
@@ -60,6 +61,17 @@ start_linefollow:
       while (!IR_Status('M')) {
         digitalWrite(enB, 0);  //TRight
       }
+      delay(90);
+
+      // digitalWrite(in3, LOW);
+      // digitalWrite(in4, HIGH);
+      digitalWrite(enB, 1);
+      hasForwarded = false;
+    } else if (IR_Status('K') && !IR_Status('M')) {
+      while (!IR_Status('M')) {
+        digitalWrite(enB, 0);  //TRight
+      }
+      delay(90);
 
       // digitalWrite(in3, LOW);
       // digitalWrite(in4, HIGH);

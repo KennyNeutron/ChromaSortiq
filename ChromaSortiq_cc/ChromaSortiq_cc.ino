@@ -19,7 +19,7 @@ uint32_t isr_count = 0;
 bool start_operation = false;
 
 uint8_t marker_Station = 0;
-uint16_t delay_forward = 300;
+uint16_t delay_forward = 100;
 
 
 void setup() {
@@ -33,28 +33,34 @@ void setup() {
 
   ColorSense_Init();
 
+  //++++ TEST HERE ++++
+  // myServo.attach(servoPin);
+  // Servo_DropPackage();
+  // interrupt_setup();
+  // while (1) {
+  //   ColorISR();
+  //   testColor2();
+  // }
+  //++++++++++++++++++++
+  delay(3000);
+
   myServo.attach(servoPin);
-  myServo.write(130);
   delay(1000);
   Servo_Shake();
   delay(500);
   Servo_DropPackage();
   delay(100);
 
-  //++++ TEST HERE ++++
-  // while (1) {
-  //   IR_test();
-  // }
-  //++++++++++++++++++++
 
+  int_en = true;
   interrupt_setup();
   start_operation = true;
 }
 
 void loop() {
-
-  if (IR_getScore() >= 3 && IR_Status('K') && !markerReached) {
+  if (IR_getScore() == 4 && !markerReached) {
     Motor_Stop();
+    int_en = false;
     markerReached = true;
     marker_Station++;
     if (marker_Station > 4) {
@@ -62,16 +68,27 @@ void loop() {
     }
     EEPROM.write(1, marker_Station);
     delay(3000);
+    if (Color_GetTargetMarking() == Color_None) {
+      packageDropped = true;
+    }
   }
 
 
   if (marker_Station == 1 && markerReached) {
+    ColorISR();
+    ColorISR();
 st_station1:
-    while (Color_GetTargetMarking() == Color_None) {
-      delay(3000);
-    }
-    delay(3000);
+    ColorISR();
+    delay(5000);
     if (Color_GetTargetMarking() == Color_None) {
+      goto st_station1;
+    }
+    if (Color_GetTargetMarking() == Color_Other) {
+      Servo_Shake();
+      ColorISR();
+      ColorISR();
+      ColorISR();
+      delay(3000);
       goto st_station1;
     }
     packageDropped = false;
@@ -102,10 +119,15 @@ st_station1:
 
 void continue_forward() {
   markerReached = true;
+  int_en = false;
   Motor_Forward();
-  delay(delay_forward);
+  delay(100);
+  while (IR_getScore() >= 3) {
+    delay(100);
+  }
+  int_en = true;
   //FIND CENTER HERE
-  robot_FindCenter();
+  //robot_FindCenter();
   markerReached = false;
   start_operation = true;
   hasForwarded = true;

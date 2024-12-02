@@ -31,11 +31,13 @@ bool IR_Status(char WhichIR) {
 }
 
 void IR_test() {
-  Serial.println("IR Left Status: " + String(IR_Status('L')));
+  Serial.println("\n\n\nIR Left Status: " + String(IR_Status('L')));
   Serial.println("IR Right Status: " + String(IR_Status('R')));
   Serial.println("IR Middle Status: " + String(IR_Status('M')));
   Serial.println("IR Marker Status: " + String(IR_Status('K')));
-  Serial.println("IR Score:" +String(IR_getScore()));
+  Serial.println("IR Score:" + String(IR_getScore()));
+
+  delay(300);
 }
 
 

@@ -49,12 +49,8 @@ void Motor_Right() {
 }
 
 void Motor_Stop() {
-  analogWrite(enA, 0);
-  analogWrite(enB, 0);
-  // digitalWrite(in1, LOW);
-  // digitalWrite(in2, LOW);
-  // digitalWrite(in3, LOW);
-  // digitalWrite(in4, LOW);
+  digitalWrite(enA, LOW);
+  digitalWrite(enB, LOW);
 }
 
 
@@ -69,7 +65,7 @@ void Servo_DropPackage() {
   delay(1000);
   myServo.write(30);
   delay(1000);
-  myServo.write(130);
+  myServo.write(120);
   delay(1000);
   packageDropped = true;
 }
@@ -77,9 +73,11 @@ void Servo_DropPackage() {
 
 void Servo_Shake() {
   for (uint8_t i = 0; i < 5; i++) {
-    myServo.write(110);
-    delay(300);
-    myServo.write(80);
-    delay(300);
+    myServo.write(115);
+    delay(100);
+    myServo.write(70);
+    delay(100);
   }
+  myServo.write(120);
+  delay(1000);
 }
